@@ -27,6 +27,7 @@ export const userRepo = {
     async findById(id:string){
         const user = await userCollection.findOne({_id: new ObjectId(id)})
         console.log("Repo")
+        console.log(user)
         if(user){
             // @ts-ignore
             delete Object.assign(user, {["id"]: user["_id"] })["_id"];
