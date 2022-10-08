@@ -27,6 +27,7 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
     const tokens = await jwtService.generateTokens(user);
     res.cookie('refreshToken', tokens.refreshToken, {
         //maxAge: 24 * 3600,
+        secure:true,
         expires:  dayjs().add(20, "seconds").toDate(),
         httpOnly: true,
       });
