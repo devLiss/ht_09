@@ -1,4 +1,3 @@
-// @ts-ignore
 import express, {NextFunction, Request, Response} from 'express'
 import bodyParser from "body-parser";
 import {blogsRouter} from "./routes/blogsRouter";
