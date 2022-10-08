@@ -25,18 +25,16 @@ export const userRepo = {
         return user;
 },
     async findById(id:string){
-        const user = await userCollection.find({_id: new ObjectId(id)}).toArray()
+        const user = await userCollection.findOne({_id: new ObjectId(id)})
         console.log("Repo")
-        if(user[0]){
+        if(user){
             // @ts-ignore
-            delete Object.assign(user[0], {["userId"]: user[0]["_id"] })["_id"];
+            delete Object.assign(user, {["id"]: user["_id"] })["_id"];
+            delete user.passwordHash;
+            delete user.passwordSalt;
+            delete user.emailConfirmation;
         }
-        return {
-            id: user[0].id,
-            login: user[0].login,
-            email: user[0].email,
-            createdAt: user[0].createdAt
-    }//user[0];
+        return user
     },
     async deleteUser(id:string){
         const result = await userCollection.deleteOne({_id:new ObjectId(id)})
