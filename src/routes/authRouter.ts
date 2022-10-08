@@ -114,6 +114,7 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
         return
     }
     await jwtService.revokeToken(userId, refreshToken)
+    res.clearCookie("refreshToken");
     res.sendStatus(204)
 })
 authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
