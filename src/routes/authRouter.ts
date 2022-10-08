@@ -100,10 +100,9 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
         res.sendStatus(401)
         return
     }
-
     const check = await jwtService.checkRevokedTokens(user.id.toString(), refreshToken)
     if(check){
-        res.sendStatus(401)
+        res.status(401).send("Token in Blacklist")
         return
     }
     await jwtService.revokeToken(user.id.toString(), refreshToken)
