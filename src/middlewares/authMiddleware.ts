@@ -18,6 +18,6 @@ export const authMiddleware = async (req:Request, res:Response, next:NextFunctio
         return
     }
     // @ts-ignore
-    req.user = await userService.getUserById(userId.toString());
+    req.user = await userService.getUserById(userId);
     next()
 }

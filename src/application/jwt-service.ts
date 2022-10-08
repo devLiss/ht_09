@@ -37,7 +37,7 @@ export const jwtService = {
     async getUserByRefreshToken(refreshToken:string){
         try{
             const result:any = jwt.verify(refreshToken, settings.JWT_REFRESH_SECRET);
-            return new ObjectId(result.userId)
+            return result.userId
         }
         catch (e){
             return null

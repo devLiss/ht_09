@@ -46,13 +46,13 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         res.sendStatus(401)
         return
     }
-    const check = await jwtService.checkRevokedTokens(user.id.toString(), refreshToken)
+    const check = await jwtService.checkRevokedTokens(user.id, refreshToken)
     if(check){
         res.sendStatus(401)
         return
     }
     const tokens = await jwtService.generateTokens(user);
-    await jwtService.revokeToken(user.id.toString(), refreshToken)
+    await jwtService.revokeToken(user.id, refreshToken)
     res.cookie('refreshToken', tokens.refreshToken, {
         expires:  dayjs().add(20, "seconds").toDate(),
         secure:true,
