@@ -15,7 +15,7 @@ export const jwtService = {
     },
 
     async generateTokens(user:any){
-        const token = jwt.sign({userId:user.id}, settings.JWT_SECRET, {expiresIn:'10s'})
+        const token = jwt.sign({userId:user.id}, settings.JWT_SECRET, {expiresIn:'20s'})
         const refreshToken = jwt.sign({userId:user.id}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
 
         return {
