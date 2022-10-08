@@ -25,7 +25,7 @@ export const userRepo = {
         return user;
 },
     async findById(id:string){
-        const user = await userCollection.find({_id: new ObjectId(id)}).project({passwordHash:0, passwordSalt:0, createdAt:0}).toArray()
+        const user = await userCollection.find({_id: new ObjectId(id)}).toArray()
         console.log("Repo")
         if(user[0]){
             // @ts-ignore
