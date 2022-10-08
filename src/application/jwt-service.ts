@@ -26,7 +26,7 @@ export const jwtService = {
     async getUserByAccessToken(token:string){
       try{
           const result:any = jwt.verify(token, settings.JWT_SECRET);
-          console.log(result)
+          console.log(result.userId)
           return new ObjectId(result.userId)
       }
       catch(e){
