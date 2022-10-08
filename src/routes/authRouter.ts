@@ -99,17 +99,17 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
         return
     }
     const refreshToken = req.cookies.refreshToken
-    const user = await jwtService.getUserByRefreshToken(refreshToken)
-    if(!user){
+    const userId = await jwtService.getUserByRefreshToken(refreshToken)
+    if(!userId){
         res.sendStatus(401)
         return
     }
-    const check = await jwtService.checkRevokedTokens(user.id, refreshToken)
+    const check = await jwtService.checkRevokedTokens(userId, refreshToken)
     if(check){
         res.status(401).send("Token in Blacklist")
         return
     }
-    await jwtService.revokeToken(user.id, refreshToken)
+    await jwtService.revokeToken(userId, refreshToken)
     res.sendStatus(204)
 })
 authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
