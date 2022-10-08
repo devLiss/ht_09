@@ -9,6 +9,7 @@ export const blogCollection = client.db("ht_03").collection<blogType>("blogs");
 export const postCollection = client.db("ht_03").collection<postType>("posts");
 export const userCollection = client.db("ht_03").collection("users");
 export const commentsCollection = client.db("ht_03").collection("comments");
+export const tokensBlackListCollection = client.db("ht_03").collection("tokens");
 
 export async function runDB(){
     try {

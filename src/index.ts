@@ -13,11 +13,14 @@ import * as dotenv from 'dotenv'
 import {commentsRouter} from "./routes/commentsRouter";
 import {commentService} from "./domain/comments-service";
 import {commentRepo} from "./repositories/comment-db-repo";
+import cookieParser from 'cookie-parser'
+
 dotenv.config()
 export const app = express()
 const port = process.env.PORT || 5000
 
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.delete('/testing/all-data',async (req: Request, res: Response) => {
     await blogsRepo.deleteAll();
     await postRepo.deleteAll();
