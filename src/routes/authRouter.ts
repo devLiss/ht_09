@@ -22,8 +22,6 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         res.send(401)
         return
     }
-    /*const token = await jwtService.createJwt(user)
-    const refresh = await jwtService.createRefreshToken(user)*/
     const tokens = await jwtService.generateTokens(user);
     res.cookie('refreshToken', tokens.refreshToken, {
         //maxAge: 24 * 3600,
@@ -31,7 +29,9 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         expires:  dayjs().add(20, "seconds").toDate(),
         httpOnly: true,
       });
-    res.status(200).send(tokens.accessToken)
+    res.status(200).send({
+        accessToken:tokens.accessToken
+    })
 })
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     if(!req.cookies.refreshToken){
@@ -55,7 +55,9 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         expires:  dayjs().add(20, "seconds").toDate(),
         httpOnly: true,
     });
-    res.status(200).send(tokens.accessToken)
+    res.status(200).send({
+        accessToken:tokens.accessToken
+    })
 })
 
 authRouter.post('/registration-confirmation',async (req:Request, res:Response)=>{
