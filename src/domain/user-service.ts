@@ -35,7 +35,14 @@ export const userService = {
             return null
 
         }
-        return createResult
+
+
+        return {
+            id: createResult.id,
+            login: createResult.login,
+            email: createResult.email,
+            createdAt: createResult.createdAt
+        }
     },
     async _generateHash(password:string, salt:string){
         const hash = await bcrypt.hash(password, salt)

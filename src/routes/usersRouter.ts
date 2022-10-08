@@ -21,6 +21,7 @@ userRouter.get('/',searchLoginTermSanitizer,searchEmailTermSanitizer, pageNumber
 userRouter.post('/',authGuard,loginValidator, passwordValidator, emailVAlidator, inputValidationMiddleware, async (req:Request, res:Response) => {
     const {login, password, email} = req.body
     const createdUser = await userService.createUser(login, password, email);
+
     res.status(201).send(createdUser)
 })
 userRouter.delete('/:id',authGuard, inputValidationMiddleware, async (req:Request, res:Response) => {
