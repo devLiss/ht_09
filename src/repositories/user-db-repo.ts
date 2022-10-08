@@ -32,6 +32,7 @@ export const userRepo = {
             // @ts-ignore
             delete Object.assign(user, {["id"]: user["_id"] })["_id"];
             delete user.passwordHash;
+            delete user.createdAt;
             delete user.passwordSalt;
             delete user.emailConfirmation;
         }
