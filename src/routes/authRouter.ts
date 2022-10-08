@@ -40,6 +40,8 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     }
     const refreshToken = req.cookies.refreshToken
     const user = await jwtService.getUserByRefreshToken(refreshToken)
+    console.log("REfresh")
+    console.log(user)
     if(!user){
         res.sendStatus(401)
         return
