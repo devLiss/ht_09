@@ -52,6 +52,10 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         return
     }
     const user = await userService.getUserById(userId);
+    if(!user){
+        res.sendStatus(401)
+        return
+    }
     const tokens = await jwtService.generateTokens(user);
     console.log(tokens)
     await jwtService.revokeToken(userId, refreshToken)
