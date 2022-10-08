@@ -102,12 +102,12 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
         res.sendStatus(401)
         return
     }
-    const check = await jwtService.checkRevokedTokens(user.id.toString(), refreshToken)
+    const check = await jwtService.checkRevokedTokens(user.id, refreshToken)
     if(check){
         res.status(401).send("Token in Blacklist")
         return
     }
-    await jwtService.revokeToken(user.id.toString(), refreshToken)
+    await jwtService.revokeToken(user.id, refreshToken)
     res.sendStatus(204)
 })
 authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
