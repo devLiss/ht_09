@@ -113,6 +113,6 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
 authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
     console.log(req)
     //@ts-ignore
-    const user = await userService.getUserById(req.user!.userId)
+    const user = await userService.getUserById(req.user!.id)
     res.status(200).send(user)
 })
