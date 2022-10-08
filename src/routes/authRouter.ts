@@ -116,6 +116,6 @@ authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
     //@ts-ignore
     console.log(req.user)
     //@ts-ignore
-    const user = await userService.getUserById(req.user!.id)
+    const user = await userService.getUserById(req.user!.userId)
     res.status(200).send(user)
 })

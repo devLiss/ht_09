@@ -30,7 +30,7 @@ export const userRepo = {
         console.log(user)
         if(user){
             // @ts-ignore
-            delete Object.assign(user, {["id"]: user["_id"] })["_id"];
+            delete Object.assign(user, {["userId"]: user["_id"] })["_id"];
             delete user.passwordHash;
             delete user.createdAt;
             delete user.passwordSalt;
