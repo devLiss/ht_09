@@ -53,6 +53,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     await jwtService.revokeToken(user.id.toString(), refreshToken)
     res.cookie('refreshToken', tokens.refreshToken, {
         expires:  dayjs().add(20, "seconds").toDate(),
+        secure:true,
         httpOnly: true,
     });
     res.status(200).send({
