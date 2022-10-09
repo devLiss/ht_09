@@ -34,10 +34,12 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
     })
 })
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
+
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
         return
     }
+    console.log(req.cookies.refreshToken)
     const refreshToken = req.cookies.refreshToken
     const userId = await jwtService.getUserByRefreshToken(refreshToken)
     console.log("REfresh")

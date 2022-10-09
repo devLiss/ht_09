@@ -1,18 +1,31 @@
-import {ObjectId} from "mongodb";
+import {ObjectId, WithId} from "mongodb";
 import { userCollection} from "./db";
 import {userAccountDbType, userDBType, userType} from "../types";
 
+interface userDb{
+    id?:string|ObjectId
+    login:string
+    passwordHash:string
+    createdAt:string
+    passwordSalt:string
+    emailConfirmation:{
+        confirmationCode:string
+        expirationDate:Date
+        isConfirmed:boolean
+    }
+}
+
 export const userRepo = {
-    async createUser(user:any):Promise<any>{
+    async createUser(user:userDb):Promise<userDb>{
         await userCollection.insertOne(user)
             //@ts-ignore
         delete Object.assign(user, {["id"]: user["_id"] })["_id"];
         return user;
 },
-    async findByLoginOrEmail(loginOrEmail:string){
+    async findByLoginOrEmail(loginOrEmail:string):Promise<any>{
         const user = await userCollection.findOne({$or:[{"email":loginOrEmail},{"login":loginOrEmail}]})
         //@ts-ignore
-        //delete Object.assign(user, {["id"]: user["_id"] })["_id"];
+        delete Object.assign(user, {["id"]: user["_id"] })["_id"];
         return user
 
     },
