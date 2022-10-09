@@ -125,5 +125,7 @@ authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
     console.log(req.user)
     //@ts-ignore
     const user = await userService.getUserById(req.user!.id)
+    //@ts-ignore
+    delete Object.assign(user, {["userId"]: user["id"] })["id"];
     res.status(200).send(user)
 })
