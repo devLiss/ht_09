@@ -23,6 +23,7 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         return
     }
     const tokens = await jwtService.generateTokens(user);
+    console.log(tokens.refreshToken)
     res.cookie('refreshToken', tokens.refreshToken, {
         //maxAge: 24 * 3600,
         secure:true,
@@ -123,6 +124,6 @@ authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
     //@ts-ignore
     console.log(req.user)
     //@ts-ignore
-    const user = await userService.getUserById(req.user!.userId)
+    const user = await userService.getUserById(req.user!.id)
     res.status(200).send(user)
 })
