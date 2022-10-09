@@ -5,6 +5,7 @@ import {userAccountDbType, userDBType, userType} from "../types";
 interface userDb{
     id?:string|ObjectId
     login:string
+    email:string
     passwordHash:string
     createdAt:string
     passwordSalt:string
@@ -18,7 +19,7 @@ interface userDb{
 export const userRepo = {
     async createUser(user:userDb):Promise<userDb>{
         await userCollection.insertOne(user)
-            //@ts-ignore
+        //@ts-ignore
         delete Object.assign(user, {["id"]: user["_id"] })["_id"];
         return user;
 },

@@ -35,8 +35,6 @@ export const userService = {
             return null
 
         }
-
-
         return {
             id: createResult.id,
             login: createResult.login,
