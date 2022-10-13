@@ -47,3 +47,19 @@ export interface userAccountDbType{
                 isConfirmed: boolean
         }
 }
+
+export interface SessionDbType{
+        _id?:ObjectId
+        ip:string
+        title:string
+        lastActivateDate:string
+        expiredDate:string
+        deviceId:string,
+        userId:string
+}
+export interface SessionType{
+        ip:string
+        title:string
+        lastActivateDate:string
+        deviceId:string,
+}

@@ -3,7 +3,6 @@ import {userRepo} from "../repositories/user-db-repo";
 import {userService} from "./user-service";
 import {userAccountDbType} from "../types";
 import {v4 as uuidv4} from "uuid";
-import {tokensBlackListCollection} from "../repositories/db";
 import {tokenRepo} from "../repositories/token-db-repo";
 import {ObjectId} from "mongodb";
 

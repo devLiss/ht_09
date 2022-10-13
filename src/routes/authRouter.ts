@@ -71,7 +71,6 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         accessToken:tokens.accessToken
     })
 })
-
 authRouter.post('/registration-confirmation',async (req:Request, res:Response)=>{
     const result = await authService.confirmEmail(req.body.code)
 
