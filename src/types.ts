@@ -52,6 +52,7 @@ export interface SessionDbType{
         _id?:ObjectId
         ip:string
         title:string
+        requestCount:number
         lastActivateDate:Date
         expiredDate:Date
         deviceId:string,

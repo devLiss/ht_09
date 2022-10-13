@@ -6,11 +6,11 @@ import {jwtService} from "../application/jwt-service";
 
 export const sessionService = {
     async addSession(ip:string, title:string, expiredDate:Date, userId:string){
-
         const deviceId = uuidv4();
         const session:SessionDbType = {
             ip,
             title,
+            requestCount:0,
             lastActivateDate:new Date(),
             expiredDate,
             deviceId,
