@@ -13,6 +13,8 @@ import {jwtService} from "../application/jwt-service";
 import {authMiddleware} from "../middlewares/authMiddleware";
 import {authService} from "../domain/auth-service";
 import dayjs from "dayjs";
+import {sessionService} from "../domain/session-service";
+import add from "date-fns/add";
 
 export const authRouter = Router({})
 
@@ -22,7 +24,11 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         res.send(401)
         return
     }
-    const tokens = await jwtService.generateTokens(user);
+    console.log(req.headers["user-agent"]);
+
+    const session = await sessionService.addSession(req.ip, req.headers["user-agent"]!, add(new Date(), {seconds:10}),user.id)
+
+    const tokens = await jwtService.generateTokens(user, session.deviceId);
     console.log(tokens.refreshToken)
     res.cookie('refreshToken', tokens.refreshToken, {
         //maxAge: 24 * 3600,
@@ -42,26 +48,15 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     }
     console.log(req.cookies.refreshToken)
     const refreshToken = req.cookies.refreshToken
-    const userId = await jwtService.getUserByRefreshToken(refreshToken)
-    console.log("REfresh")
-    console.log(userId)
-    if(!userId){
+    //const userId = await jwtService.getUserByRefreshToken(refreshToken)
+    const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
+    if(!payload){
         res.sendStatus(401)
         return
     }
-    const check = await jwtService.checkRevokedTokens(userId, refreshToken)
-    if(check){
-        res.sendStatus(401)
-        return
-    }
-    const user = await userService.getUserById(userId);
-    if(!user){
-        res.sendStatus(401)
-        return
-    }
-    const tokens = await jwtService.generateTokens(user);
-    console.log(tokens)
-    await jwtService.revokeToken(userId, refreshToken)
+
+    const tokens = await jwtService.generateTokens(payload.userId,payload.deviceId);
+
     res.cookie('refreshToken', tokens.refreshToken, {
         expires:  dayjs().add(20, "seconds").toDate(),
         secure:true,
@@ -105,17 +100,14 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
         return
     }
     const refreshToken = req.cookies.refreshToken
-    const userId = await jwtService.getUserByRefreshToken(refreshToken)
-    if(!userId){
+    //const userId = await jwtService.getUserByRefreshToken(refreshToken)
+    const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
+    if(!payload){
         res.sendStatus(401)
         return
     }
-    const check = await jwtService.checkRevokedTokens(userId, refreshToken)
-    if(check){
-        res.status(401).send("Token in Blacklist")
-        return
-    }
-    await jwtService.revokeToken(userId, refreshToken)
+
+    await sessionService.removeSessionByDeviceId(payload.deviceId);
     res.clearCookie("refreshToken");
     res.sendStatus(204)
 })

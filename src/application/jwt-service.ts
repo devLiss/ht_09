@@ -5,9 +5,9 @@ import {ObjectId} from "mongodb";
 import {tokenRepo} from "../repositories/token-db-repo";
 
 export const jwtService = {
-    async generateTokens(user:any){
+    async generateTokens(user:any, deviceId:string){
         const token = jwt.sign({userId:user.id}, settings.JWT_SECRET, {expiresIn:'10s'})
-        const refreshToken = jwt.sign({userId:user.id}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
+        const refreshToken = jwt.sign({deviceId:deviceId, userId:user.id}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
 
         return {
             accessToken:token,

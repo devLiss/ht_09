@@ -52,14 +52,14 @@ export interface SessionDbType{
         _id?:ObjectId
         ip:string
         title:string
-        lastActivateDate:string
-        expiredDate:string
+        lastActivateDate:Date
+        expiredDate:Date
         deviceId:string,
         userId:string
 }
 export interface SessionType{
         ip:string
         title:string
-        lastActivateDate:string
+        lastActivateDate:Date
         deviceId:string,
 }

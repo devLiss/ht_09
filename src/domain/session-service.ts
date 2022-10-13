@@ -5,19 +5,17 @@ import {jwtService} from "../application/jwt-service";
 
 
 export const sessionService = {
-    async addSession(ip:string, title:string, expiredDate:string, userId:string){
+    async addSession(ip:string, title:string, expiredDate:Date, userId:string){
 
         const deviceId = uuidv4();
-
         const session:SessionDbType = {
             ip,
             title,
-            lastActivateDate:new Date().toISOString(),
+            lastActivateDate:new Date(),
             expiredDate,
             deviceId,
             userId
         }
-
         return await sessionDbRepo.createSession(session)
     },
 
