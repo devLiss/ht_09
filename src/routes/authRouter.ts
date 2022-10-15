@@ -19,34 +19,6 @@ import {sessionDbRepo} from "../repositories/session-db-repo";
 
 export const authRouter = Router({})
 
-authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
-    const user = await userService.checkCredentials(req.body.login, req.body.password)
-    if(!user){
-        res.sendStatus(401)
-        return
-    }
-    /*const session = await sessionService.addSession(req.ip, req.headers["user-agent"]!, add(new Date(), {seconds:10}),user.id)
-
-    const tokens = await jwtService.generateTokens(user, session.deviceId);
-    console.log(tokens.refreshToken)*/
-
-    const session = await sessionService.createSession(user, req.ip, req.headers["user-agent"]!);
-
-    if(!session){
-        console.log("!!! NE SESSION !!! ")
-        res.sendStatus(401)
-        return
-    }
-    res.cookie('refreshToken', session.refreshToken, {
-        secure:true,
-        expires:  dayjs().add(20, "seconds").toDate(),
-        httpOnly: true,
-      });
-
-    res.status(200).send({
-        accessToken:session.accessToken
-    })
-})
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
 
     if(!req.cookies.refreshToken){
@@ -78,6 +50,34 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     });
     res.status(200).send({
         accessToken:tokens.accessToken
+    })
+})
+authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
+    const user = await userService.checkCredentials(req.body.login, req.body.password)
+    if(!user){
+        res.sendStatus(401)
+        return
+    }
+    /*const session = await sessionService.addSession(req.ip, req.headers["user-agent"]!, add(new Date(), {seconds:10}),user.id)
+
+    const tokens = await jwtService.generateTokens(user, session.deviceId);
+    console.log(tokens.refreshToken)*/
+
+    const session = await sessionService.createSession(user, req.ip, req.headers["user-agent"]!);
+
+    if(!session){
+        console.log("!!! NE SESSION !!! ")
+        res.sendStatus(401)
+        return
+    }
+    res.cookie('refreshToken', session.refreshToken, {
+        secure:true,
+        expires:  dayjs().add(20, "seconds").toDate(),
+        httpOnly: true,
+      });
+
+    res.status(200).send({
+        accessToken:session.accessToken
     })
 })
 authRouter.post('/registration-confirmation',async (req:Request, res:Response)=>{
