@@ -28,7 +28,7 @@ app.delete('/testing/all-data',async (req: Request, res: Response) => {
     await postRepo.deleteAll();
     await userRepo.deleteAll();
     await commentRepo.deleteAll();
-    //await sessionDbRepo.deleteAll();
+    await sessionDbRepo.deleteAll();
 
     res.status(204).send([])
 })
