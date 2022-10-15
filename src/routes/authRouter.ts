@@ -35,6 +35,7 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
     const session = await sessionService.createSession(user, req.ip, req.headers["user-agent"]!);
 
     if(!session){
+        console.log("!!! NE SESSION !!! ")
         res.send(401)
         return
     }
