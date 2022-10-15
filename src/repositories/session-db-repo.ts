@@ -1,4 +1,4 @@
-import {commentsCollection, sessionCollection} from "./db";
+import {sessionCollection} from "./db";
 import {SessionDbType, SessionType} from "../types";
 import {ObjectId} from "mongodb";
 
@@ -44,6 +44,7 @@ export const sessionDbRepo = {
     },
 
     async removeAllSessionsByUserId(deviceId:string, userId:string){
+        console.log("removeAllSessionsByUserId -> userID -> "+userId)
         const result = await sessionCollection.deleteMany({userId:new ObjectId(userId), deviceId:{$ne:deviceId}})
         return result.deletedCount > 0
     },

@@ -30,6 +30,8 @@ sessionRouter.delete('/',async (req:Request, res:Response)=>{
         res.sendStatus(401)
         return
     }
+    console.log("DELETE ALL")
+    console.log(payload)
     const isDeleted = await sessionService.removeSessionsByUserId(payload.userId, payload.deviceId);
     if(!isDeleted){
         res.sendStatus(401)

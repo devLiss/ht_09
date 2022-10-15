@@ -41,8 +41,7 @@ export const sessionService = {
             return null
         }
         const session = await sessionDbRepo.getSessionByUserByDeviceAndByDate(payload.userId, payload.deviceId, new Date(payload.iat))
-        if(!session)
-        {
+        if(!session){
             return null
         }
 
