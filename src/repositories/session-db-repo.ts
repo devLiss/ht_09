@@ -43,7 +43,7 @@ export const sessionDbRepo = {
         return result.deletedCount === 1
     },
 
-    async removeAllSessionsByUserId(deviceId:string, userId:string){
+    async removeAllSessionsByUserId(userId:string,deviceId:string){
         console.log("removeAllSessionsByUserId -> userID -> "+userId)
         const result = await sessionCollection.deleteMany({userId:new ObjectId(userId), deviceId:{$ne:deviceId}})
         return result.deletedCount > 0
