@@ -38,7 +38,7 @@ export const sessionService = {
         if(!payload){
             return null
         }
-        const session = await sessionDbRepo.getSessionByUserByDeviceAndByDate(payload.userId, payload.deviceId, new Date(payload.iat))
+        const session = await sessionDbRepo.getSessionByUserByDeviceAndByDate(payload.userId, payload.deviceId, new Date(payload.iat * 1000))
         if(!session){
             return null
         }
