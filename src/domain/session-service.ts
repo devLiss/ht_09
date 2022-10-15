@@ -14,8 +14,6 @@ export const sessionService = {
         const tokens = await jwtService.generateTokens(userId, deviceId);
         const payload = await jwtService.getPayloadByRefreshToken(tokens.refreshToken);
 
-        console.log("REFRESH! "+tokens.refreshToken)
-        console.log("PAYLOAD "+payload)
         if(!payload){
             return null
         }

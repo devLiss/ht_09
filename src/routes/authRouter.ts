@@ -25,8 +25,6 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         res.sendStatus(401)
         return
     }
-    console.log(req.headers["user-agent"]);
-
     /*const session = await sessionService.addSession(req.ip, req.headers["user-agent"]!, add(new Date(), {seconds:10}),user.id)
 
     const tokens = await jwtService.generateTokens(user, session.deviceId);

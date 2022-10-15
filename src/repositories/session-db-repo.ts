@@ -28,7 +28,6 @@ export const sessionDbRepo = {
         return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
-        console.log("USERID " + userId)
         const sessions = await sessionCollection.find({userId: new ObjectId(userId)}).project({
             "_id":0,
             "ip": 1,
@@ -44,7 +43,6 @@ export const sessionDbRepo = {
     },
 
     async removeAllSessionsByUserId(userId:string,deviceId:string){
-        console.log("removeAllSessionsByUserId -> userID -> "+userId)
         const result = await sessionCollection.deleteMany({userId:new ObjectId(userId), deviceId:{$ne:deviceId}})
         return result.deletedCount > 0
     },
