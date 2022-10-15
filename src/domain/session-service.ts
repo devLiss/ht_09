@@ -22,7 +22,7 @@ export const sessionService = {
         const session:SessionDbType = {
                 ip,
                 title,
-                lastActivateDate:new Date(payload.iat),
+                lastActiveDate:new Date(payload.iat),
                 expiredDate:new Date(payload.expiredDate),
                 deviceId,
                 userId
