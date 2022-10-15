@@ -16,6 +16,8 @@ sessionRouter.get('/',async (req:Request, res:Response)=>{
         return
     }
     const sessions = await sessionService.getSessionsByUserId(payload.userId)
+    console.log("GET DEVICES")
+    console.log(sessions)
     res.status(200).send(sessions)
 })
 sessionRouter.delete('/',async (req:Request, res:Response)=>{
