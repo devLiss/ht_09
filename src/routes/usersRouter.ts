@@ -18,7 +18,7 @@ userRouter.get('/',searchLoginTermSanitizer,searchEmailTermSanitizer, pageNumber
     const users = await userService.getUsers(searchLoginTerm, searchEmailTerm,+pageNumber!, +pageSize!, sortBy, sortDirection);
     res.status(200).send(users);
 })
-userRouter.post('/',authGuard,loginValidator, passwordValidator, emailVAlidator, inputValidationMiddleware, async (req:Request, res:Response) => {
+userRouter.post('/'/*,authGuard*/,loginValidator, passwordValidator, emailVAlidator, inputValidationMiddleware, async (req:Request, res:Response) => {
     const {login, password, email} = req.body
     const createdUser = await userService.createUser(login, password, email);
 

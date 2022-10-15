@@ -22,7 +22,7 @@ export const authRouter = Router({})
 authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)
     if(!user){
-        res.send(401)
+        res.sendStatus(401)
         return
     }
     console.log(req.headers["user-agent"]);
@@ -36,7 +36,7 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
 
     if(!session){
         console.log("!!! NE SESSION !!! ")
-        res.send(401)
+        res.sendStatus(401)
         return
     }
     res.cookie('refreshToken', session.refreshToken, {
