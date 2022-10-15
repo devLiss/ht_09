@@ -29,9 +29,10 @@ export const userService = {
             await emailManager.sendConfirmation(newUser);
         }
         catch(e){
+            console.log("failed create user")
             console.log(e)
             // @ts-ignore
-            await userRepo.deleteUser(newUser!.id!)
+            //await userRepo.deleteUser(newUser!.id!)
             return null
 
         }
