@@ -25,7 +25,7 @@ const limiter = rateLimit({
 
 export const authRouter = Router({})
 
-/*authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
+authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     console.log("REFRESH-TOKEN!!!")
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
@@ -50,7 +50,7 @@ export const authRouter = Router({})
     res.status(200).send({
         accessToken:tokens.accessToken
     })
-})*/
+})
 authRouter.post('/login',limiter, body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)
     if(!user){
