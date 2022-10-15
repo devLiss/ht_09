@@ -1,5 +1,6 @@
 import {commentsCollection, sessionCollection} from "./db";
 import {SessionDbType, SessionType} from "../types";
+import {ObjectId} from "mongodb";
 
 export const sessionDbRepo = {
 
@@ -18,17 +19,17 @@ export const sessionDbRepo = {
         return session;
     },
     async getSessionByUserByDeviceAndByDate(userId:string, deviceId:string, issuedAt:Date){
-        const sessions = await sessionCollection.find({userId:userId, deviceId:deviceId, lastActivateDate:issuedAt}).toArray();
+        const sessions = await sessionCollection.find({userId:new ObjectId(userId), deviceId:deviceId, lastActivateDate:issuedAt}).toArray();
         return sessions;
     },
 
     async updateSession(userId:string,deviceId:string,expiredDate:Date,issuedAt:Date){
-        const result = await sessionCollection.updateOne({userId:userId, deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActivateDate:issuedAt}})
+        const result = await sessionCollection.updateOne({userId:new ObjectId(userId), deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActivateDate:issuedAt}})
         return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
         console.log("USERID " + userId)
-        const sessions = await sessionCollection.find({userId: userId}).project({
+        const sessions = await sessionCollection.find({userId: new ObjectId(userId)}).project({
             "_id":0,
             "ip": 1,
             "title": 1,
@@ -38,12 +39,12 @@ export const sessionDbRepo = {
         return sessions
     },
     async removeSessionByDeviceId(userId:string,deviceId:string){
-        const result = await sessionCollection.deleteOne({userId:userId,deviceId:deviceId})
+        const result = await sessionCollection.deleteOne({userId:new ObjectId(userId),deviceId:deviceId})
         return result.deletedCount === 1
     },
 
     async removeAllSessionsByUserId(deviceId:string, userId:string){
-        const result = await sessionCollection.deleteMany({userId:userId, deviceId:{$ne:deviceId}})
+        const result = await sessionCollection.deleteMany({userId:new ObjectId(userId), deviceId:{$ne:deviceId}})
         return result.deletedCount > 0
     },
 
