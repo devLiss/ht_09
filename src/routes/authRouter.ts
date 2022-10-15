@@ -53,7 +53,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         res.sendStatus(401)
         return
     }
-    console.log(req.cookies.refreshToken)
+    console.log("REFRESH-TOKEN ="+ req.cookies.refreshToken)
     const refreshToken = req.cookies.refreshToken
     //const userId = await jwtService.getUserByRefreshToken(refreshToken)
     /*const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
@@ -69,6 +69,8 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         res.sendStatus(401);
         return
     }
+    console.log("NEW REFRESH-TOKEN ="+ tokens.refreshToken)
+    console.log("NEW ACCESS-TOKEN ="+ tokens.accessToken)
     res.cookie('refreshToken', tokens.refreshToken, {
         expires:  dayjs().add(20, "seconds").toDate(),
         secure:true,
