@@ -35,6 +35,8 @@ export const sessionService = {
 
     async updateSession(refreshToken:string):Promise<{accessToken:string, refreshToken:string}|null>{
         const payload = await jwtService.getPayloadByRefreshToken(refreshToken);
+        console.log("UPDATE SESSION PAYLOAD")
+        console.log(payload)
         if(!payload){
             return null
         }
