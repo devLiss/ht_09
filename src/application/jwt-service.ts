@@ -5,9 +5,9 @@ import {ObjectId} from "mongodb";
 import {tokenRepo} from "../repositories/token-db-repo";
 
 export const jwtService = {
-    async generateTokens(user:any, deviceId:string){
-        const token = jwt.sign({userId:user.id}, settings.JWT_SECRET, {expiresIn:'10s'})
-        const refreshToken = jwt.sign({deviceId:deviceId, userId:user.id}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
+    async generateTokens(userId:any, deviceId:string){
+        const token = jwt.sign({userId:userId}, settings.JWT_SECRET, {expiresIn:'10s'})
+        const refreshToken = jwt.sign({deviceId:deviceId, userId:userId}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s',algorithm: "RS256"})
 
         return {
             accessToken:token,
@@ -27,9 +27,9 @@ export const jwtService = {
       }
     },
 
-    async getPayloadByRefreshToken(refreshToken:string):Promise<{deviceId:string, userId:string} | null>{
+    async getPayloadByRefreshToken(refreshToken:string):Promise<any>{
         try {
-            const result: any = jwt.verify(refreshToken, settings.JWT_REFRESH_SECRET);
+            const result: any = jwt.verify(refreshToken, settings.JWT_REFRESH_SECRET, {algorithms:["RS256"]});
             return result
         }
         catch (e){

@@ -17,9 +17,14 @@ export const sessionDbRepo = {
         const session = await sessionCollection.findOne({deviceId:deviceId});
         return session;
     },
-    async getSessionsByUserIdAndDeviceId(userId:string, deviceId:string){
-        const sessions = await sessionCollection.find({userId:userId, deviceId:deviceId}).toArray();
+    async getSessionByUserByDeviceAndByDate(userId:string, deviceId:string, issuedAt:Date){
+        const sessions = await sessionCollection.find({userId:userId, deviceId:deviceId, lastActivateDate:issuedAt}).toArray();
         return sessions;
+    },
+
+    async updateSession(userId:string,deviceId:string,expiredDate:Date,issuedAt:Date){
+        const result = await sessionCollection.updateOne({userId:userId, deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActivateDate:issuedAt}})
+        return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
         const sessions = await sessionCollection.find({userId: userId}).project({
@@ -31,8 +36,8 @@ export const sessionDbRepo = {
         }).toArray();
         return sessions
     },
-    async removeSessionByDeviceId(deviceId:string){
-        const result = await sessionCollection.deleteOne({deviceId:deviceId})
+    async removeSessionByDeviceId(userId:string,deviceId:string){
+        const result = await sessionCollection.deleteOne({userId:userId,deviceId:deviceId})
         return result.deletedCount === 1
     },
 
