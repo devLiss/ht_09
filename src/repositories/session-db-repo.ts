@@ -10,7 +10,7 @@ export const sessionDbRepo = {
         return {
             ip:session.ip,
             title:session.title,
-            lastActivateDate:session.lastActivateDate,
+            lastActiveDate:session.lastActiveDate,
             deviceId:session.deviceId
         }
     },
@@ -33,7 +33,7 @@ export const sessionDbRepo = {
             "_id":0,
             "ip": 1,
             "title": 1,
-            "lastActivateDate": 1,
+            "lastActiveDate": 1,
             "deviceId": 1
         }).toArray();
         return sessions
