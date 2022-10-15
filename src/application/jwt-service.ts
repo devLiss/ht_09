@@ -33,6 +33,8 @@ export const jwtService = {
             return result
         }
         catch (e){
+            console.log("Fall")
+            console.log(e)
             return null
         }
     },
