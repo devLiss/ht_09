@@ -16,6 +16,7 @@ export const sessionService = {
         if(!payload){
             console.log("null")
         }
+        console.log("REFRESH! "+tokens.refreshToken)
         const session:SessionDbType = {
             ip,
             title,
