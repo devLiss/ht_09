@@ -16,7 +16,7 @@ sessionRouter.get('/',async (req:Request, res:Response)=>{
         return
     }
     const sessions = await sessionService.getSessionsByUserId(payload.userId)
-    res.sendStatus(200).send(sessions)
+    res.status(200).send(sessions)
 })
 sessionRouter.delete('/',async (req:Request, res:Response)=>{
     if(!req.cookies.refreshToken){
