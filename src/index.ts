@@ -37,7 +37,7 @@ app.use('/posts', postsRouter)
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
 app.use('/comments', commentsRouter)
-app.use('/security/device',sessionRouter)
+app.use('/security/devices',sessionRouter)
 app.get('/',(req:Request, res:Response)=>{
     res.send('Hello!')
 })

@@ -39,13 +39,12 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
         res.send(401)
         return
     }
-    console.log(session.currentSession)
     res.cookie('refreshToken', session.refreshToken, {
-        //maxAge: 24 * 3600,
         secure:true,
         expires:  dayjs().add(20, "seconds").toDate(),
         httpOnly: true,
       });
+
     res.status(200).send({
         accessToken:session.accessToken
     })
