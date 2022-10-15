@@ -25,7 +25,7 @@ const limiter = rateLimit({
 
 export const authRouter = Router({})
 
-authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
+/*authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     console.log("REFRESH-TOKEN!!!")
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
@@ -34,13 +34,6 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     console.log("REFRESH-TOKEN ="+ req.cookies.refreshToken)
     const refreshToken = req.cookies.refreshToken
     //const userId = await jwtService.getUserByRefreshToken(refreshToken)
-    /*const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
-    if(!payload){
-        res.sendStatus(401)
-        return
-    }
-
-    const tokens = await jwtService.generateTokens(payload.userId,payload.deviceId);*/
 
     const tokens = await sessionService.updateSession(refreshToken);
     if(!tokens){
@@ -57,7 +50,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     res.status(200).send({
         accessToken:tokens.accessToken
     })
-})
+})*/
 authRouter.post('/login',limiter, body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)
     if(!user){
