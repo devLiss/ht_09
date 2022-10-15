@@ -46,15 +46,5 @@ export const jwtService = {
         catch (e){
             return null
         }
-    },
-
-    async revokeToken(userId:string, token:string){
-        await tokenRepo.revokeToken(userId, token)
-        return null
-    },
-
-    async checkRevokedTokens(userId:string, token:string){
-        const findToken = await tokenRepo.getBlackList(userId,token);
-        return findToken
     }
 }
