@@ -58,7 +58,7 @@ sessionRouter.delete('/:id',async (req:Request, res:Response)=>{
         return
     }
 
-    const isDeleted = await sessionService.removeSessionByDeviceId(req.params.id)
+    const isDeleted = await sessionService.removeSessionByDeviceId(payload.userId,req.params.id)
     res.sendStatus(204)
 
 })
