@@ -27,6 +27,7 @@ export const sessionDbRepo = {
         return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
+        console.log("USERID " + userId)
         const sessions = await sessionCollection.find({userId: userId}).project({
             "_id":0,
             "ip": 1,
