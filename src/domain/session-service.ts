@@ -22,8 +22,8 @@ export const sessionService = {
         const session:SessionDbType = {
                 ip,
                 title,
-                lastActiveDate:new Date(payload.iat),
-                expiredDate:new Date(payload.expiredDate),
+                lastActiveDate:new Date(payload.iat * 1000 ),
+                expiredDate:new Date(payload.expiredDate * 1000),
                 deviceId,
                 userId
         }
@@ -51,8 +51,10 @@ export const sessionService = {
         if(!newPayload){
             console.log("null")
         }
-
-        await sessionDbRepo.updateSession(newPayload.userId,newPayload.deviceId,newPayload.expiredDate,newPayload.iat);
+        await sessionDbRepo.updateSession(newPayload.userId,
+            newPayload.deviceId,
+            new Date(newPayload.expiredDate * 1000),
+            new Date(newPayload.iat * 1000));
         return {
             accessToken:tokens.accessToken,
             refreshToken:tokens.refreshToken,
