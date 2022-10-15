@@ -7,17 +7,18 @@ import jwt from "jsonwebtoken";
 
 
 export const sessionService = {
-    async createSession(user:any, ip:string, title:string):Promise<{accessToken:string, refreshToken:string, currentSession:SessionType}>{
+    async createSession(user:any, ip:string, title:string):Promise<{accessToken:string, refreshToken:string, currentSession:SessionType} | null>{
         const userId = user.id;
         const deviceId = uuidv4();
 
         const tokens = await jwtService.generateTokens(userId, deviceId);
         const payload = await jwtService.getPayloadByRefreshToken(tokens.refreshToken);
-        if(!payload){
-            console.log("null")
-        }
         console.log("REFRESH! "+tokens.refreshToken)
         console.log("PAYLOAD "+payload)
+        if(!payload){
+           return null
+        }
+
         const session:SessionDbType = {
             ip,
             title,

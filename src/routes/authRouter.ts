@@ -34,6 +34,10 @@ authRouter.post('/login', body('login').trim().isLength({min:1}),body('password'
 
     const session = await sessionService.createSession(user, req.ip, req.headers["user-agent"]!);
 
+    if(!session){
+        res.send(401)
+        return
+    }
     console.log(session.currentSession)
     res.cookie('refreshToken', session.refreshToken, {
         //maxAge: 24 * 3600,
