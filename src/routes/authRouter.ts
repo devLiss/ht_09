@@ -46,7 +46,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         accessToken:tokens.accessToken
     })
 })
-authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
+authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, responseCountMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)
     if(!user){
         res.sendStatus(401)
@@ -97,7 +97,7 @@ authRouter.post('/registration',responseCountMiddleware/*,loginValidator, passwo
     }
     res.sendStatus(204)
 })
-authRouter.post('/registration-email-resending',responseCountMiddleware,emailNotExistsValidation, inputValidationMiddleware,async (req:Request, res:Response)=>{
+authRouter.post('/registration-email-resending',responseCountMiddleware,/*emailNotExistsValidation, inputValidationMiddleware,*/async (req:Request, res:Response)=>{
     const result = await authService.resendConfirmCode(req.body.email)
     res.sendStatus(204)
 })
