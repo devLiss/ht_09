@@ -10,7 +10,7 @@ export const responseCountMiddleware = async (req:Request, res:Response, next:Ne
 
     if(count > 5){
         console.log("Count requests grate then 5!")
-        res.send(429)
+        res.sendStatus(429)
         return
     }
     next();
