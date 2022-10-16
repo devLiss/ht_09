@@ -19,8 +19,6 @@ import rateLimit from 'express-rate-limit'
 const limiter = rateLimit({
     windowMs: 10 * 1000, // 15 minutes
     max: 5, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
 export const authRouter = Router({})
@@ -51,7 +49,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
         accessToken:tokens.accessToken
     })
 })
-authRouter.post('/login',limiter, body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
+authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)
     if(!user){
         res.sendStatus(401)
@@ -79,7 +77,7 @@ authRouter.post('/login',limiter, body('login').trim().isLength({min:1}),body('p
         accessToken:session.accessToken
     })
 })
-authRouter.post('/registration-confirmation',limiter,async (req:Request, res:Response)=>{
+authRouter.post('/registration-confirmation',async (req:Request, res:Response)=>{
     const result = await authService.confirmEmail(req.body.code)
 
     console.log(result);
@@ -92,7 +90,7 @@ authRouter.post('/registration-confirmation',limiter,async (req:Request, res:Res
             field:"code"
         }]})
 })
-authRouter.post('/registration',limiter,/*loginValidator, passwordValidator, */loginRegValidation, emailRegValidation, inputValidationMiddleware,async (req:Request, res:Response)=>{
+authRouter.post('/registration'/*limiter,loginValidator, passwordValidator, loginRegValidation, emailRegValidation, inputValidationMiddleware*/,async (req:Request, res:Response)=>{
     console.log("REGISTARTION");
     const createdUser = await userService.createUser(req.body.login, req.body.password, req.body.email)
     console.log(createdUser);
@@ -102,7 +100,7 @@ authRouter.post('/registration',limiter,/*loginValidator, passwordValidator, */l
     }
     res.sendStatus(204)
 })
-authRouter.post('/registration-email-resending',limiter,emailNotExistsValidation, inputValidationMiddleware,async (req:Request, res:Response)=>{
+authRouter.post('/registration-email-resending',emailNotExistsValidation, inputValidationMiddleware,async (req:Request, res:Response)=>{
     const result = await authService.resendConfirmCode(req.body.email)
     res.sendStatus(204)
 })
