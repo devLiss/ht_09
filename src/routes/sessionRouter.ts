@@ -52,7 +52,10 @@ sessionRouter.delete('/:id',async (req:Request, res:Response)=>{
         res.sendStatus(404)
         return
     }
-    if(session.userId !== new Object(payload.userId))
+
+    console.log(session.userId)
+    console.log(payload.userId)
+    if(session.userId.toString() !== payload.userId)
     {
         res.sendStatus(403)
         return
