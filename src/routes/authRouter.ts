@@ -23,7 +23,7 @@ export const authRouter = Router({})
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
 
     console.log("Refresh-token endPoint")
-    res.sendStatus(200)
+    //res.sendStatus(200)
 
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
