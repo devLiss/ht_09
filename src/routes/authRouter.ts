@@ -91,9 +91,8 @@ authRouter.post('/registration-confirmation',responseCountMiddleware,async (req:
         }]})
 })
 authRouter.post('/registration',responseCountMiddleware/*,loginValidator, passwordValidator, loginRegValidation, emailRegValidation, inputValidationMiddleware*/,async (req:Request, res:Response)=>{
-    console.log("REGISTARTION");
     const createdUser = await userService.createUser(req.body.login, req.body.password, req.body.email)
-    console.log(createdUser);
+
     if(!createdUser){
         res.sendStatus(400)
         return

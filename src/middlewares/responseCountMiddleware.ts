@@ -5,7 +5,6 @@ export const responseCountMiddleware = async (req:Request, res:Response, next:Ne
     const interval = 10*1000
     const currentDate = new Date();
     const count = await requestDbRepo.getRequestsCountPer10sec(req.ip, req.url, new Date(currentDate.getTime()-interval));
-    console.log("COUNT "+ count +" ---> URL "+req.url+" ---> IP "+req.ip)
     await requestDbRepo.createRequestRow(req.ip, req.url,new Date())
 
     if(count >= 5){
