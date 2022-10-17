@@ -19,12 +19,12 @@ export const sessionDbRepo = {
         return session;
     },
     async getSessionByUserByDeviceAndByDate(userId:string, deviceId:string, issuedAt:Date){
-        const sessions = await sessionCollection.find({userId:new ObjectId(userId), deviceId:deviceId, lastActivateDate:issuedAt}).toArray();
+        const sessions = await sessionCollection.find({userId:new ObjectId(userId), deviceId:deviceId, lastActiveDate:issuedAt}).toArray();
         return sessions;
     },
 
     async updateSession(userId:string,deviceId:string,expiredDate:Date,issuedAt:Date){
-        const result = await sessionCollection.updateOne({userId:new ObjectId(userId), deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActivateDate:issuedAt}})
+        const result = await sessionCollection.updateOne({userId:new ObjectId(userId), deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActiveDate:issuedAt}})
         return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
