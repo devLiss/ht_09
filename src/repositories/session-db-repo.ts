@@ -19,16 +19,16 @@ export const sessionDbRepo = {
         return session;
     },
     async getSessionByUserByDeviceAndByDate(userId:string, deviceId:string, issuedAt:Date){
-        const sessions = await sessionCollection.find({userId:new ObjectId(userId), deviceId:deviceId, lastActiveDate:issuedAt}).toArray();
+        const sessions = await sessionCollection.find({userId:/*new ObjectId(userId)*/userId, deviceId:deviceId, lastActiveDate:issuedAt}).toArray();
         return sessions;
     },
 
     async updateSession(userId:string,deviceId:string,expiredDate:Date,issuedAt:Date){
-        const result = await sessionCollection.updateOne({userId:new ObjectId(userId), deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActiveDate:issuedAt}})
+        const result = await sessionCollection.updateOne({userId:/*new ObjectId(userId)*/userId, deviceId:deviceId}, {$set:{expiredDate:expiredDate, lastActiveDate:issuedAt}})
         return result.matchedCount === 1
     },
     async getSessionsByUserId(userId:string)/*:Promise<SessionType[]>*/{
-        const sessions = await sessionCollection.find({userId: new ObjectId(userId)}).project({
+        const sessions = await sessionCollection.find({userId: /*new ObjectId(userId)*/userId}).project({
             "_id":0,
             "ip": 1,
             "title": 1,
@@ -38,12 +38,12 @@ export const sessionDbRepo = {
         return sessions
     },
     async removeSessionByDeviceId(userId:string,deviceId:string){
-        const result = await sessionCollection.deleteOne({userId:new ObjectId(userId),deviceId:deviceId})
+        const result = await sessionCollection.deleteOne({userId:/*new ObjectId(userId)*/userId,deviceId:deviceId})
         return result.deletedCount === 1
     },
 
     async removeAllSessionsByUserId(userId:string,deviceId:string){
-        const result = await sessionCollection.deleteMany({userId:new ObjectId(userId), deviceId:{$ne:deviceId}})
+        const result = await sessionCollection.deleteMany({userId:/*new ObjectId(userId)*/userId, deviceId:{$ne:deviceId}})
         return result.deletedCount > 0
     },
 

@@ -50,7 +50,6 @@ export const userService = {
     async checkCredentials(login:string, password:string):Promise<any>{
         const user = await userRepo.findByLogin(login)
         console.log("User in creds with login ---> "+login)
-        console.log(user)
         if(!user) return null
         const passwordHash = await this._generateHash(password, user.passwordSalt)
         if(user.passwordHash !== passwordHash){

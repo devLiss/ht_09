@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 export const sessionService = {
     async createSession(user:any, ip:string, title:string):Promise<{accessToken:string, refreshToken:string} | null>{
-        const userId = user.id;
+        const userId = user.id.toString();
         const deviceId = uuidv4();
 
         const tokens = await jwtService.generateTokens(userId, deviceId);
@@ -36,7 +36,6 @@ export const sessionService = {
     async updateSession(refreshToken:string):Promise<{accessToken:string, refreshToken:string}|null>{
         const payload = await jwtService.getPayloadByRefreshToken(refreshToken);
         console.log("UPDATE SESSION PAYLOAD")
-        console.log(payload)
         if(!payload){
             return null
         }
@@ -48,8 +47,7 @@ export const sessionService = {
         const tokens = await jwtService.generateTokens(payload.userId, payload.deviceId);
         const newPayload = await jwtService.getPayloadByRefreshToken(tokens.refreshToken);
 
-        console.log("TOKENS ="+JSON.stringify(tokens))
-        console.log(newPayload)
+        
         if(!newPayload){
             console.log("null")
         }
