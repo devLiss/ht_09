@@ -56,8 +56,9 @@ sessionRouter.delete('/:id',async (req:Request, res:Response)=>{
 
     console.log("USER ID")
     console.log(session.userId)
-    console.log(payload.userId)
+    
     const payloadUserId = new ObjectId(payload.ObjectId)
+    console.log(payloadUserId)
     if(session.userId !== payloadUserId)
     {
         res.sendStatus(403)
