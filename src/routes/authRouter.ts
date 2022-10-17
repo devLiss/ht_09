@@ -21,7 +21,7 @@ import {responseCountMiddleware} from "../middlewares/responseCountMiddleware";
 export const authRouter = Router({})
 
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
-    /*console.log("REFRESH-TOKEN!!!")
+/*
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
         return
