@@ -45,7 +45,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     res.status(200).send({
         accessToken:tokens.accessToken
     })*/
-
+try{
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
         return
@@ -81,6 +81,10 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     res.status(200).send({
         accessToken:tokens.accessToken
     })
+}
+catch(e){
+    console.error(e)
+}
 
 
 })
