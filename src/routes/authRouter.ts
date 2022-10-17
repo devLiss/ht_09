@@ -21,6 +21,9 @@ import {responseCountMiddleware} from "../middlewares/responseCountMiddleware";
 export const authRouter = Router({})
 
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
+
+    console.log("Refresh-token endPoint")
+    res.sendStatus(200)
 /*
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
@@ -45,7 +48,7 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     res.status(200).send({
         accessToken:tokens.accessToken
     })*/
-try{
+/*try{
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
         return
@@ -85,7 +88,7 @@ try{
 catch(e){
     console.error(e)
 }
-
+*/
 
 })
 authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, responseCountMiddleware, async (req:Request, res:Response)=>{
@@ -157,8 +160,16 @@ authRouter.post('/logout',async (req:Request, res:Response)=>{
     }
 
     await sessionService.removeSessionByDeviceId(payload.userId,payload.deviceId);
+    const check = await jwtService.checkRevokedTokens(payload.userId, refreshToken)
+    if(check){
+        res.status(401).send("Token in Blacklist")
+        return
+    }
+    await jwtService.revokeToken(payload.userId, refreshToken)
     res.clearCookie("refreshToken");
     res.sendStatus(204)
+
+    
 })
 authRouter.get('/me', authMiddleware, async (req:Request, res:Response)=>{
     //@ts-ignore
