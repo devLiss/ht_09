@@ -21,7 +21,7 @@ import {responseCountMiddleware} from "../middlewares/responseCountMiddleware";
 export const authRouter = Router({})
 
 authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
-    console.log("REFRESH-TOKEN!!!")
+    /*console.log("REFRESH-TOKEN!!!")
     if(!req.cookies.refreshToken){
         res.sendStatus(401)
         return
@@ -44,7 +44,44 @@ authRouter.post('/refresh-token',async (req:Request, res:Response)=> {
     });
     res.status(200).send({
         accessToken:tokens.accessToken
+    })*/
+
+    if(!req.cookies.refreshToken){
+        res.sendStatus(401)
+        return
+    }
+    console.log(req.cookies.refreshToken)
+    const refreshToken = req.cookies.refreshToken
+    const userId = await jwtService.getUserByRefreshToken(refreshToken)
+    console.log("REfresh")
+    console.log(userId)
+    if(!userId){
+        res.sendStatus(401)
+        return
+    }
+    const check = await jwtService.checkRevokedTokens(userId, refreshToken)
+    if(check){
+        res.sendStatus(401)
+        return
+    }
+    const user = await userService.getUserById(userId);
+    if(!user){
+        res.sendStatus(401)
+        return
+    }
+    const tokens = await jwtService.generateTokens(user);
+    console.log(tokens)
+    await jwtService.revokeToken(userId, refreshToken)
+    res.cookie('refreshToken', tokens.refreshToken, {
+        expires:  dayjs().add(20, "seconds").toDate(),
+        secure:true,
+        httpOnly: true,
+    });
+    res.status(200).send({
+        accessToken:tokens.accessToken
     })
+
+
 })
 authRouter.post('/login', body('login').trim().isLength({min:1}),body('password').trim().isLength({min:1}) , inputValidationMiddleware, responseCountMiddleware, async (req:Request, res:Response)=>{
     const user = await userService.checkCredentials(req.body.login, req.body.password)

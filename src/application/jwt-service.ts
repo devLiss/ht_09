@@ -5,9 +5,19 @@ import {ObjectId} from "mongodb";
 import {tokenRepo} from "../repositories/token-db-repo";
 
 export const jwtService = {
-    async generateTokens(userId:any, deviceId:string){
+    /*async generateTokens(userId:any, deviceId:string){
         const token = jwt.sign({userId:userId}, settings.JWT_SECRET, {expiresIn:'10s'})
         const refreshToken = jwt.sign({deviceId:deviceId, userId:userId}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
+
+        return {
+            accessToken:token,
+            refreshToken:refreshToken
+        }
+    },*/
+
+    async generateTokens(userId:any/*, deviceId:string*/){
+        const token = jwt.sign({userId:userId}, settings.JWT_SECRET, {expiresIn:'10s'})
+        const refreshToken = jwt.sign({/*deviceId:deviceId, */userId:userId}, settings.JWT_REFRESH_SECRET, {expiresIn:'20s'})
 
         return {
             accessToken:token,
@@ -48,5 +58,15 @@ export const jwtService = {
         catch (e){
             return null
         }
+    },
+
+    async revokeToken(userId:string, token:string){
+        await tokenRepo.revokeToken(userId, token)
+        return null
+    },
+
+    async checkRevokedTokens(userId:string, token:string){
+        const findToken = await tokenRepo.getBlackList(userId,token);
+        return findToken
     }
 }
