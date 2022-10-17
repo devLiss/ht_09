@@ -15,7 +15,7 @@ export const sessionDbRepo = {
         }
     },
     async getSessionByDeviceId(deviceId:string){
-        const session = await sessionCollection.findOne({deviceId:deviceId});
+        const session = await sessionCollection.findOne({deviceId:deviceId},{projection:{_id:0}});
         return session;
     },
     async getSessionByUserByDeviceAndByDate(userId:string, deviceId:string, issuedAt:Date){

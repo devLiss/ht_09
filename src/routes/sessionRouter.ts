@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/authMiddleware";
 import {sessionService} from "../domain/session-service";
 import {jwtService} from "../application/jwt-service";
+import { ObjectId } from "mongodb";
 
 export const  sessionRouter = Router({})
 
@@ -55,7 +56,8 @@ sessionRouter.delete('/:id',async (req:Request, res:Response)=>{
 
     console.log(session.userId)
     console.log(payload.userId)
-    if(session.userId.toString() !== payload.userId)
+    const payloadUserId = new ObjectId(payload.ObjectId)
+    if(session.userId !== payloadUserId)
     {
         res.sendStatus(403)
         return
