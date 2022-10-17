@@ -55,7 +55,11 @@ sessionRouter.delete('/:id',async (req:Request, res:Response)=>{
     }
 
     console.log("USER ID")
+    console.log(session)
     console.log(session.userId)
+    console.log(payload)
+    console.log(new ObjectId(payload.ObjectId))
+
     
     const payloadUserId = new ObjectId(payload.ObjectId)
     console.log(payloadUserId)
