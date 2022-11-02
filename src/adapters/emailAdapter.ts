@@ -5,17 +5,17 @@ export const emailAdapter = {
     async send(user:any,subject:string, message:string) {
         let transporter = nodemailer.createTransport({
             //service: "gmail",
-            host:"smtp.yandex.ru",
+            host:"smtp.gmail.com",
             port: 465,
             secure: true,
             auth: {
-                user: "devliss@yandex.ru",//process.env.SMTP_USER || "",
-                pass: "u*qY5tTJ*w53f" //process.env.SMTP_PASSWORD || ""
+                user: "devliss158@gmail.com",//process.env.SMTP_USER || "",
+                pass: "fvjtotzebownrwmk" //process.env.SMTP_PASSWORD || ""
             }
         });
 
         let result = await transporter.sendMail({
-            from:  "devliss@yandex.ru",
+            from:  "devliss158@gmail.com",
             to: user.email,
             subject: subject,
             html: message
